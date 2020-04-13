@@ -1,0 +1,442 @@
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Applicatio_Request_Mapper]    Script Date: 4/13/2020 9:56:27 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Applicatio_Request_Mapper](
+	[Request_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Request_App_Name] [nvarchar](max) NOT NULL,
+	[Request_App_By_Reg_UserID] [int] NOT NULL,
+	[Request_App_ApprovedBy_Reg_UserID] [int] NOT NULL,
+	[Request_Status] [nchar](10) NOT NULL,
+ CONSTRAINT [PK_Applicatio_Request_Mapper] PRIMARY KEY CLUSTERED 
+(
+	[Request_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Applicatio_Request_Mapper]  WITH CHECK ADD  CONSTRAINT [FK_Applicatio_Request_Mapper_User_Registration] FOREIGN KEY([Request_App_By_Reg_UserID])
+REFERENCES [dbo].[User_Registration] ([Reg_UserID])
+GO
+
+ALTER TABLE [dbo].[Applicatio_Request_Mapper] CHECK CONSTRAINT [FK_Applicatio_Request_Mapper_User_Registration]
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Application_Master]    Script Date: 4/13/2020 9:56:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Application_Master](
+	[Application_ID] [int] NOT NULL,
+	[Application_Name] [nvarchar](max) NOT NULL,
+	[Application_Reg_Admin_UserID] [int] NOT NULL,
+	[Application_CreationTime] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Application_Master] PRIMARY KEY CLUSTERED 
+(
+	[Application_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Application_User_Mapper]    Script Date: 4/13/2020 9:56:54 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Application_User_Mapper](
+	[App_Map_ID] [int] IDENTITY(1,1) NOT NULL,
+	[App_Application_ID] [int] NOT NULL,
+	[App_user_Reg_ID] [int] NOT NULL,
+ CONSTRAINT [PK_Application_User_Mapper] PRIMARY KEY CLUSTERED 
+(
+	[App_Map_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Application_User_Mapper]  WITH CHECK ADD  CONSTRAINT [FK_Application_User_Mapper_Application_Master] FOREIGN KEY([App_Application_ID])
+REFERENCES [dbo].[Application_Master] ([Application_ID])
+GO
+
+ALTER TABLE [dbo].[Application_User_Mapper] CHECK CONSTRAINT [FK_Application_User_Mapper_Application_Master]
+GO
+
+ALTER TABLE [dbo].[Application_User_Mapper]  WITH CHECK ADD  CONSTRAINT [FK_Application_User_Mapper_User_Registration] FOREIGN KEY([App_user_Reg_ID])
+REFERENCES [dbo].[User_Registration] ([Reg_UserID])
+GO
+
+ALTER TABLE [dbo].[Application_User_Mapper] CHECK CONSTRAINT [FK_Application_User_Mapper_User_Registration]
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Navigation_History]    Script Date: 4/13/2020 9:57:02 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Navigation_History](
+	[Nav_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Nav_TS_ID] [int] NOT NULL,
+	[Nav_Application_ID] [int] NOT NULL,
+	[Nav_Page_ID] [int] NOT NULL,
+	[Nav_Reg_ID] [int] NOT NULL,
+	[Nav_UnloadEvent] [nvarchar](50) NOT NULL,
+	[Nav_RedirectEvent] [nvarchar](50) NOT NULL,
+	[Nav_AppCache] [nvarchar](50) NOT NULL,
+	[Nav_TTFB] [nvarchar](50) NOT NULL,
+	[Nav_Processing] [nvarchar](50) NOT NULL,
+	[Nav_DomInteractive] [nvarchar](50) NOT NULL,
+	[Nav_DomComplete] [nvarchar](50) NOT NULL,
+	[Nav_ContentLoad] [nvarchar](50) NOT NULL,
+	[Nav_PageLoad] [nvarchar](50) NOT NULL,
+	[Nav_EntrySyetemTimes] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Navigation_History] PRIMARY KEY CLUSTERED 
+(
+	[Nav_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Navigation_Master]    Script Date: 4/13/2020 9:57:11 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Navigation_Master](
+	[Nav_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Nav_TS_ID] [int] NOT NULL,
+	[Nav_Application_ID] [int] NOT NULL,
+	[Nav_Page_ID] [int] NOT NULL,
+	[Nav_Reg_ID] [int] NOT NULL,
+	[Nav_UnloadEvent] [nvarchar](50) NOT NULL,
+	[Nav_RedirectEvent] [nvarchar](50) NOT NULL,
+	[Nav_AppCache] [nvarchar](50) NOT NULL,
+	[Nav_TTFB] [nvarchar](50) NOT NULL,
+	[Nav_Processing] [nvarchar](50) NOT NULL,
+	[Nav_DomInteractive] [nvarchar](50) NOT NULL,
+	[Nav_DomComplete] [nvarchar](50) NOT NULL,
+	[Nav_ContentLoad] [nvarchar](50) NOT NULL,
+	[Nav_PageLoad] [nvarchar](50) NOT NULL,
+	[Nav_EntrySyetemTimes] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Navigation_Master] PRIMARY KEY CLUSTERED 
+(
+	[Nav_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Navigation_Master]  WITH CHECK ADD  CONSTRAINT [FK_Navigation_Master_Application_Master] FOREIGN KEY([Nav_Application_ID])
+REFERENCES [dbo].[Application_Master] ([Application_ID])
+GO
+
+ALTER TABLE [dbo].[Navigation_Master] CHECK CONSTRAINT [FK_Navigation_Master_Application_Master]
+GO
+
+ALTER TABLE [dbo].[Navigation_Master]  WITH CHECK ADD  CONSTRAINT [FK_Navigation_Master_Page_Master] FOREIGN KEY([Nav_Page_ID])
+REFERENCES [dbo].[Page_Master] ([Page_ID])
+GO
+
+ALTER TABLE [dbo].[Navigation_Master] CHECK CONSTRAINT [FK_Navigation_Master_Page_Master]
+GO
+
+ALTER TABLE [dbo].[Navigation_Master]  WITH CHECK ADD  CONSTRAINT [FK_Navigation_Master_TestScenario_Master] FOREIGN KEY([Nav_TS_ID])
+REFERENCES [dbo].[TestScenario_Master] ([TS_ID])
+GO
+
+ALTER TABLE [dbo].[Navigation_Master] CHECK CONSTRAINT [FK_Navigation_Master_TestScenario_Master]
+GO
+
+ALTER TABLE [dbo].[Navigation_Master]  WITH CHECK ADD  CONSTRAINT [FK_Navigation_Master_User_Registration] FOREIGN KEY([Nav_Reg_ID])
+REFERENCES [dbo].[User_Registration] ([Reg_UserID])
+GO
+
+ALTER TABLE [dbo].[Navigation_Master] CHECK CONSTRAINT [FK_Navigation_Master_User_Registration]
+GO
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Page_Master]    Script Date: 4/13/2020 9:57:24 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Page_Master](
+	[Page_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Page_Name] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Page_Master] PRIMARY KEY CLUSTERED 
+(
+	[Page_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Resource_Mapper]    Script Date: 4/13/2020 9:57:34 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Resource_Mapper](
+	[RS_Map_ID] [int] IDENTITY(1,1) NOT NULL,
+	[RS_Res_ID] [int] NOT NULL,
+	[RS_Nav_ID] [int] NOT NULL,
+	[RS_Res_Duration] [nvarchar](50) NOT NULL,
+	[RS_Res_StartTimes] [datetime2](7) NOT NULL,
+	[RS_Res_EndTimes] [datetime2](7) NULL,
+	[RS_Res_EntrySyetemTimes] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Resource_Mapper] PRIMARY KEY CLUSTERED 
+(
+	[RS_Map_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Resource_Mapper]  WITH CHECK ADD  CONSTRAINT [FK_Resource_Mapper_Navigation_Master] FOREIGN KEY([RS_Nav_ID])
+REFERENCES [dbo].[Navigation_Master] ([Nav_ID])
+GO
+
+ALTER TABLE [dbo].[Resource_Mapper] CHECK CONSTRAINT [FK_Resource_Mapper_Navigation_Master]
+GO
+
+ALTER TABLE [dbo].[Resource_Mapper]  WITH CHECK ADD  CONSTRAINT [FK_Resource_Mapper_Resource_Master] FOREIGN KEY([RS_Res_ID])
+REFERENCES [dbo].[Resource_Master] ([Res_ID])
+GO
+
+ALTER TABLE [dbo].[Resource_Mapper] CHECK CONSTRAINT [FK_Resource_Mapper_Resource_Master]
+GO
+
+
+
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Resource_Mapper_History]    Script Date: 4/13/2020 9:57:44 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Resource_Mapper_History](
+	[RSH_Map_ID] [int] NOT NULL,
+	[RSH_Res_ID] [int] NOT NULL,
+	[RSH_Nav_ID] [int] NOT NULL,
+	[RSH_Res_Duration] [nvarchar](50) NOT NULL,
+	[RSH_Res_StartTimes] [datetime2](7) NOT NULL,
+	[RSH_Res_EndTimes] [datetime2](7) NULL,
+	[RSH_Res_EntrySyetemTimes] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Resource_Mapper_History] PRIMARY KEY CLUSTERED 
+(
+	[RSH_Map_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Resource_Master]    Script Date: 4/13/2020 9:57:52 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Resource_Master](
+	[Res_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Res_Name] [nvarchar](max) NOT NULL,
+	[Res_Reg_ID] [int] NOT NULL,
+ CONSTRAINT [PK_Resource_Master] PRIMARY KEY CLUSTERED 
+(
+	[Res_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[Security_Questions]    Script Date: 4/13/2020 9:58:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Security_Questions](
+	[SeqQus_ID] [int] IDENTITY(1,1) NOT NULL,
+	[SeqQus_Qus] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Security_Questions] PRIMARY KEY CLUSTERED 
+(
+	[SeqQus_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[TestScenario_Master]    Script Date: 4/13/2020 9:58:11 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TestScenario_Master](
+	[TS_ID] [int] IDENTITY(1,1) NOT NULL,
+	[TS_Name] [nvarchar](50) NOT NULL,
+	[TS_Application_ID] [int] NOT NULL,
+	[TS_Reg_UserID] [int] NOT NULL,
+	[TS_CreationTime] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_TestScenario_Master] PRIMARY KEY CLUSTERED 
+(
+	[TS_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[TestScenario_Master]  WITH CHECK ADD  CONSTRAINT [FK_TestScenario_Master_Application_Master] FOREIGN KEY([TS_Application_ID])
+REFERENCES [dbo].[Application_Master] ([Application_ID])
+GO
+
+ALTER TABLE [dbo].[TestScenario_Master] CHECK CONSTRAINT [FK_TestScenario_Master_Application_Master]
+GO
+
+ALTER TABLE [dbo].[TestScenario_Master]  WITH CHECK ADD  CONSTRAINT [FK_TestScenario_Master_User_Registration] FOREIGN KEY([TS_Reg_UserID])
+REFERENCES [dbo].[User_Registration] ([Reg_UserID])
+GO
+
+ALTER TABLE [dbo].[TestScenario_Master] CHECK CONSTRAINT [FK_TestScenario_Master_User_Registration]
+GO
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[TestScenario_Master_History]    Script Date: 4/13/2020 9:58:19 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TestScenario_Master_History](
+	[TS_U_ID] [int] IDENTITY(1,1) NOT NULL,
+	[TS_U_TS_ID] [int] NOT NULL,
+	[TS_U_TS_Name] [nvarchar](50) NOT NULL,
+	[TS_U_TS_Application_ID] [int] NOT NULL,
+	[TS_U_TS_Reg_UserID] [int] NOT NULL,
+	[TS_U_Status] [nvarchar](50) NOT NULL,
+	[TS_U_CreationTime] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_TestScenario_Master_History] PRIMARY KEY CLUSTERED 
+(
+	[TS_U_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[TestScenario_Master_History]  WITH CHECK ADD  CONSTRAINT [FK_TestScenario_Master_History_TestScenario_Master] FOREIGN KEY([TS_U_TS_ID])
+REFERENCES [dbo].[TestScenario_Master] ([TS_ID])
+GO
+
+ALTER TABLE [dbo].[TestScenario_Master_History] CHECK CONSTRAINT [FK_TestScenario_Master_History_TestScenario_Master]
+GO
+
+
+
+
+USE [prfDatabase1]
+GO
+
+/****** Object:  Table [dbo].[User_Registration]    Script Date: 4/13/2020 9:58:27 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[User_Registration](
+	[Reg_UserID] [int] IDENTITY(1,1) NOT NULL,
+	[Reg_F_Name] [nvarchar](50) NOT NULL,
+	[Reg_L_Name] [nvarchar](50) NOT NULL,
+	[Reg_UserName] [nvarchar](50) NOT NULL,
+	[Reg_Email] [nvarchar](max) NOT NULL,
+	[Reg_Password] [nvarchar](max) NOT NULL,
+	[Reg_API_KEY] [nvarchar](max) NOT NULL,
+	[Reg_Security_Qus_ID] [int] NOT NULL,
+	[Reg_Security_Qus_Ans] [nvarchar](50) NOT NULL,
+	[Reg_User_Type] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_User_Registration] PRIMARY KEY CLUSTERED 
+(
+	[Reg_UserID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[User_Registration] ADD  DEFAULT ('User') FOR [Reg_User_Type]
+GO
+
+ALTER TABLE [dbo].[User_Registration]  WITH CHECK ADD  CONSTRAINT [FK_User_Registration_Security_Questions] FOREIGN KEY([Reg_Security_Qus_ID])
+REFERENCES [dbo].[Security_Questions] ([SeqQus_ID])
+GO
+
+ALTER TABLE [dbo].[User_Registration] CHECK CONSTRAINT [FK_User_Registration_Security_Questions]
+GO
+
+
