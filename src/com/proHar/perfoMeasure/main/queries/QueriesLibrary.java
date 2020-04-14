@@ -10,12 +10,12 @@ public class QueriesLibrary {
 		String getNavId = "select top 1 Nav_ID from Navigation_Master where Nav_TS_ID="+testCaseId+" and Nav_Application_ID="+ appId + " and Nav_Page_ID="+pageId+" and Nav_Reg_ID="+UId;
 		return getNavId;
 	}
-	
+	public static String insertIntoNavigationHistory = "INSERT INTO Navigation_History(Nav_TS_ID,Nav_Application_ID,Nav_Page_ID,Nav_Reg_ID,Nav_UnloadEvent,Nav_RedirectEvent,Nav_AppCache,Nav_TTFB,Nav_Processing,Nav_DomInteractive,Nav_DomComplete,Nav_ContentLoad,Nav_PageLoad,Nav_EntrySyetemTimes) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";
+
 	
 	public static String insertToHistory = "insert into Resource_History (TestScenarioID,TestScenarioID,Page_ID,Res_ElementName,Res_Duration,Res_DateTimes,Res_StartTimes,Res_EndTimes) values (?,?,?,?,?,?,?,?)";
 	public static String moveResToHistory = "SELECT * INTO Resource_History FROM Resources;";
 	public static String deleteFromEntries = "DELETE FROM Resources";
-	public static String moveResToHistory1 = "INSERT INTO Resource_History(Resource_ID,TestScenarioID,Application_ID,Page_ID,Res_ElementName,Res_Duration,Res_DateTimes,Res_StartTimes,Res_EndTimes) SELECT * FROM Resources; ";
 	public static String deleteReferencialConstrains = "ALTER TABLE Resource_History DROP CONSTRAINT ResourcesResource_History";
 	public static String AskApplicationMaster = "select * from Application_Master";
 	
@@ -55,6 +55,9 @@ public class QueriesLibrary {
 		return getPageId;
 	}
 	public static String insertIntoResource_Mapper = "insert into Resource_Mapper (RS_Res_ID,RS_Nav_ID,RS_Res_Duration,RS_Res_StartTimes,RS_Res_EndTimes,RS_Res_EntrySyetemTimes) values (?,?,?,?,?,?)";
+	public static String moveResourceMapperToResourceMapperHistory = "INSERT INTO Resource_Mapper_History(RS_Map_ID,RS_Res_ID,RS_Nav_ID,RS_Res_Duration,RS_Res_StartTimes,RS_Res_EndTimes,RS_Res_EntrySyetemTimes) SELECT * FROM Resource_Mapper; ";
+	public static String deleteResourceMapper = "delete from Resource_Mapper";
+	
 	
 	// Checking if user have access to the application
 	public static String hasAccessToApplication() {

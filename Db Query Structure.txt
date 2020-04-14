@@ -1,4 +1,4 @@
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Applicatio_Request_Mapper]    Script Date: 4/13/2020 9:56:27 PM ******/
@@ -30,7 +30,7 @@ ALTER TABLE [dbo].[Applicatio_Request_Mapper] CHECK CONSTRAINT [FK_Applicatio_Re
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Application_Master]    Script Date: 4/13/2020 9:56:45 PM ******/
@@ -54,7 +54,7 @@ CREATE TABLE [dbo].[Application_Master](
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Application_User_Mapper]    Script Date: 4/13/2020 9:56:54 PM ******/
@@ -91,7 +91,7 @@ ALTER TABLE [dbo].[Application_User_Mapper] CHECK CONSTRAINT [FK_Application_Use
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Navigation_History]    Script Date: 4/13/2020 9:57:02 PM ******/
@@ -126,7 +126,7 @@ CREATE TABLE [dbo].[Navigation_History](
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Navigation_Master]    Script Date: 4/13/2020 9:57:11 PM ******/
@@ -188,7 +188,7 @@ GO
 ALTER TABLE [dbo].[Navigation_Master] CHECK CONSTRAINT [FK_Navigation_Master_User_Registration]
 GO
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Page_Master]    Script Date: 4/13/2020 9:57:24 PM ******/
@@ -209,7 +209,7 @@ CREATE TABLE [dbo].[Page_Master](
 
 GO
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Resource_Mapper]    Script Date: 4/13/2020 9:57:34 PM ******/
@@ -253,7 +253,7 @@ GO
 
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Resource_Mapper_History]    Script Date: 4/13/2020 9:57:44 PM ******/
@@ -280,7 +280,7 @@ CREATE TABLE [dbo].[Resource_Mapper_History](
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Resource_Master]    Script Date: 4/13/2020 9:57:52 PM ******/
@@ -303,7 +303,7 @@ CREATE TABLE [dbo].[Resource_Master](
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[Security_Questions]    Script Date: 4/13/2020 9:58:01 PM ******/
@@ -325,7 +325,7 @@ CREATE TABLE [dbo].[Security_Questions](
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[TestScenario_Master]    Script Date: 4/13/2020 9:58:11 PM ******/
@@ -364,7 +364,7 @@ ALTER TABLE [dbo].[TestScenario_Master] CHECK CONSTRAINT [FK_TestScenario_Master
 GO
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[TestScenario_Master_History]    Script Date: 4/13/2020 9:58:19 PM ******/
@@ -400,7 +400,7 @@ GO
 
 
 
-USE [prfDatabase1]
+USE [performance2]
 GO
 
 /****** Object:  Table [dbo].[User_Registration]    Script Date: 4/13/2020 9:58:27 PM ******/

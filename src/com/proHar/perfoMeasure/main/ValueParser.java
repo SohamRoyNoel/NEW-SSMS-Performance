@@ -153,7 +153,7 @@ public class ValueParser {
 						nRowsInserted += preparedStatement.executeUpdate();
 					}
 				} catch (SQLException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				/*
 				 * Clears the list for next iteration
@@ -313,6 +313,7 @@ public class ValueParser {
 			//navHolder.add(createValueString);
 			// Push To DB
 			try (Connection connection = SSMSDataMigrationCredentials.getSSMSConnection()) {
+				// Insert into Navigation_Master table
 				PreparedStatement preparedStatement = connection.prepareStatement(QueriesLibrary.insertIntoNavigationTable);
 				navtemp = createValueString.split(",");
 				preparedStatement.setInt(1, Integer.parseInt(navtemp[0])); // TestScenarioID
@@ -330,6 +331,26 @@ public class ValueParser {
 				preparedStatement.setString(13, navtemp[12]); // Nav_PageLoad
 				java.sql.Timestamp timestamps = new java.sql.Timestamp(cal.getTimeInMillis());
 				preparedStatement.setTimestamp(14, timestamps); // Nav_DateTimes
+				nRowsInserted += preparedStatement.executeUpdate();
+				
+				// Insert into Navigation_History table
+				PreparedStatement preparedStatementH = connection.prepareStatement(QueriesLibrary.insertIntoNavigationTable);
+				navtemp = createValueString.split(",");
+				preparedStatementH.setInt(1, Integer.parseInt(navtemp[0])); // TestScenarioID
+				preparedStatementH.setInt(2, Integer.parseInt(navtemp[1])); // Application_ID
+				preparedStatementH.setInt(3, Integer.parseInt(navtemp[2])); // Page_ID
+				preparedStatementH.setInt(4, Integer.parseInt(navtemp[3])); // User_ID
+				preparedStatementH.setString(5, navtemp[4]); // Nav_UnloadEvent
+				preparedStatementH.setString(6, navtemp[5]); // Nav_RedirectEvent
+				preparedStatementH.setString(7, navtemp[6]); // Nav_AppCache
+				preparedStatementH.setString(8, navtemp[7]); // Nav_TTFB
+				preparedStatementH.setString(9, navtemp[8]); // Nav_Processing
+				preparedStatementH.setString(10, navtemp[9]); // Nav_DomInteractive
+				preparedStatementH.setString(11, navtemp[10]); // Nav_DomComplete
+				preparedStatementH.setString(12, navtemp[11]); // Nav_ContentLoad
+				preparedStatementH.setString(13, navtemp[12]); // Nav_PageLoad
+				java.sql.Timestamp timestampsH = new java.sql.Timestamp(cal.getTimeInMillis());
+				preparedStatement.setTimestamp(14, timestampsH); // Nav_DateTimes
 				nRowsInserted += preparedStatement.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();

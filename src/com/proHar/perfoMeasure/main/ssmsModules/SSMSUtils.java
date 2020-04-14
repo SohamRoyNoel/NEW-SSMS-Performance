@@ -195,20 +195,25 @@ public class SSMSUtils {
 		int holdID = 0;
 		String sql = QueriesLibrary.ifResourceExists(resName);
 		String insertSQL = QueriesLibrary.insertIntoResourceMasterTable;
-
+		ResultSet result;
+		boolean flag = false;
 		try (Connection connection = SSMSDataMigrationCredentials.getSSMSConnection()) {
 			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(sql);
-			boolean flag = false;
-			while (result.next()) {
-				int id = result.getInt("Res_ID");
-				String fullname = result.getString("Res_Name");
+			// System.out.println("Prob : "+sql);
+			try {
+				result = statement.executeQuery(sql);
+				
+				while (result.next()) {
+					int id = result.getInt("Res_ID");
+					String fullname = result.getString("Res_Name");
 
-				if (fullname.equals(resName)) {
-					holdID = id;
-					flag = true;
+					if (fullname.equals(resName)) {
+						holdID = id;
+						flag = true;
+					}
 				}
-			}
+			}catch (SQLException e) {}
+			
 			if (flag == false) {
 				int nRowsInserted = 0;
 				PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
@@ -227,7 +232,7 @@ public class SSMSUtils {
 				}
 			}              
 		} catch (Exception e) {   
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return holdID;
 	}

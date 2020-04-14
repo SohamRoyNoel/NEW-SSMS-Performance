@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.sql.PreparedStatement;
+
 
 import javax.swing.JOptionPane;
 
@@ -89,11 +91,14 @@ public class LightHouse {
 					int Navigation_Master_Nav_id = ValueParser.NavigationAnalyser(driver, getApplicationID, SSMSpager_id, SSMStestCaseID, userID);
 					System.out.println("NavId : "+Navigation_Master_Nav_id);
 					// Insert Value in Resource_Master and Return the value
-					
+
 					/*
 					 * Resources
 					 * */
 					ValueParser.ResourceAnalyser(driver, userID, Navigation_Master_Nav_id);
+					
+					RemovalAndDeletion();
+					System.out.println("done");
 				} catch (InterruptedException e) {   
 					e.printStackTrace();
 				}
@@ -104,6 +109,25 @@ public class LightHouse {
 			throw new NoApplicationAccessException("Yo do not have Permission for the application : " + ApplicationName + ", You should raise a access request from the performancelighthouse.com portal");
 		}
 
+	}
+
+	/*
+	 * Data Movement Functions
+	 * */
+	private static void RemovalAndDeletion() {
+		try (Connection connection = SSMSDataMigrationCredentials.getSSMSConnection()) {
+			// Move Resource_Mapper To Resource_Mapper_History
+			int nRowsInserted = 0;
+			PreparedStatement preparedStatements = connection.prepareStatement(QueriesLibrary.moveResourceMapperToResourceMapperHistory);
+			nRowsInserted += preparedStatements.executeUpdate();
+			
+			// Delete Entries from Resource_Mapper
+			PreparedStatement preparedStatementes1 = connection.prepareStatement(QueriesLibrary.deleteResourceMapper);
+			nRowsInserted += preparedStatementes1.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -171,16 +195,16 @@ public class LightHouse {
 		return flag;
 	}
 
-	// Access Database generation class
-	public void SSMSAgent() throws InterruptedException {
-		Connection con = SSMSDataMigrationCredentials.getSSMSConnection();
-		SSMSDataMigrationUtils sdm = new SSMSDataMigrationUtils();
-		try{
-			sdm.SSMSDatabaseManagerAgent(con);
-		} catch (Exception e) {   
-			e.printStackTrace();
-		}
-	}
+//	// Access Database generation class
+//	public void SSMSAgent() throws InterruptedException {
+//		Connection con = SSMSDataMigrationCredentials.getSSMSConnection();
+//		SSMSDataMigrationUtils sdm = new SSMSDataMigrationUtils();
+//		try{
+//			sdm.SSMSDatabaseManagerAgent(con);
+//		} catch (Exception e) {   
+//			e.printStackTrace();
+//		}
+//	}
 
 	// get values at any time
 	public List<String> getListedNavigationElementsNow(){
