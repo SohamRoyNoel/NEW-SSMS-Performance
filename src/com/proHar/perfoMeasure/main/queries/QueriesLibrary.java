@@ -7,7 +7,7 @@ public class QueriesLibrary {
 	// Navigations
 	public static String insertIntoNavigationTable = "insert into Navigation_Master (Nav_TS_ID,Nav_Application_ID,Nav_Page_ID,Nav_Reg_ID,Nav_UnloadEvent,Nav_RedirectEvent,Nav_AppCache,Nav_TTFB,Nav_Processing,Nav_DomInteractive,Nav_DomComplete,Nav_ContentLoad,Nav_PageLoad,Nav_EntrySyetemTimes) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 	public static String getIdOfLastNavigation(int appId, int pageId, int testCaseId, int UId) {
-		String getNavId = "select top 1 Nav_ID from Navigation_Master where Nav_TS_ID="+testCaseId+" and Nav_Application_ID="+ appId + " and Nav_Page_ID="+pageId+" and Nav_Reg_ID="+UId;
+		String getNavId = "select top 1 Nav_ID from Navigation_Master where Nav_TS_ID="+testCaseId+" and Nav_Application_ID="+ appId + " and Nav_Page_ID="+pageId+" and Nav_Reg_ID="+UId+" order by Nav_ID desc";
 		return getNavId;
 	}
 	public static String insertIntoNavigationHistory = "INSERT INTO Navigation_History(Nav_TS_ID,Nav_Application_ID,Nav_Page_ID,Nav_Reg_ID,Nav_UnloadEvent,Nav_RedirectEvent,Nav_AppCache,Nav_TTFB,Nav_Processing,Nav_DomInteractive,Nav_DomComplete,Nav_ContentLoad,Nav_PageLoad,Nav_EntrySyetemTimes) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?); ";

@@ -241,7 +241,9 @@ public class ValueParser {
 		// Push to map
 		for (String str : keyValPairs) {
 			String[] key = str.split("=");
-			navigationValMap.put(key[0].trim(), key[1].trim());
+			try {
+				navigationValMap.put(key[0].trim(), key[1].trim());
+			} catch (ArrayIndexOutOfBoundsException e) { }
 		}
 
 		// Values from Entries-Navigation
@@ -308,7 +310,7 @@ public class ValueParser {
 			Calendar cal = Calendar.getInstance(); 
 			java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
 			createValueString = testCaseId+","+appId+","+pageId+","+UId+","+Unload+","+Redirect+","+AppCache+","+TTFB+","+Processing+","+Dom_Interactive+","+Dom_Complete+","+Content_load+","+Page_load+","+stringDate+","+timestamp+System.lineSeparator();
-
+			String crt = createValueString;
 			// Added To the list
 			//navHolder.add(createValueString);
 			// Push To DB
@@ -332,10 +334,11 @@ public class ValueParser {
 				java.sql.Timestamp timestamps = new java.sql.Timestamp(cal.getTimeInMillis());
 				preparedStatement.setTimestamp(14, timestamps); // Nav_DateTimes
 				nRowsInserted += preparedStatement.executeUpdate();
+				System.out.println("Navigation data inserted");
 				
 				// Insert into Navigation_History table
-				PreparedStatement preparedStatementH = connection.prepareStatement(QueriesLibrary.insertIntoNavigationTable);
-				navtemp = createValueString.split(",");
+				PreparedStatement preparedStatementH = connection.prepareStatement(QueriesLibrary.insertIntoNavigationHistory);
+				navtemp = crt.split(",");
 				preparedStatementH.setInt(1, Integer.parseInt(navtemp[0])); // TestScenarioID
 				preparedStatementH.setInt(2, Integer.parseInt(navtemp[1])); // Application_ID
 				preparedStatementH.setInt(3, Integer.parseInt(navtemp[2])); // Page_ID
@@ -350,8 +353,9 @@ public class ValueParser {
 				preparedStatementH.setString(12, navtemp[11]); // Nav_ContentLoad
 				preparedStatementH.setString(13, navtemp[12]); // Nav_PageLoad
 				java.sql.Timestamp timestampsH = new java.sql.Timestamp(cal.getTimeInMillis());
-				preparedStatement.setTimestamp(14, timestampsH); // Nav_DateTimes
-				nRowsInserted += preparedStatement.executeUpdate();
+				preparedStatementH.setTimestamp(14, timestampsH); // Nav_DateTimes
+				nRowsInserted += preparedStatementH.executeUpdate();
+				System.out.println("Navigation History data inserted");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -361,7 +365,7 @@ public class ValueParser {
 
 		}catch (NullPointerException e) {
 			System.out.println("Some Fields Has No Value for " + driver.getCurrentUrl());
-
+			e.printStackTrace();
 		}
 
 		return Nav_IDs;

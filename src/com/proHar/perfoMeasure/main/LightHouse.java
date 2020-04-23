@@ -68,14 +68,14 @@ public class LightHouse {
 			 * Create TEST CASE NAME and Application name - CHECK Availability 
 			 * Use the same name for the RUN 
 			 * */
-			int flag = TsAuthentication(getApplicationID, Test_Scenario_Name);
-			if (flag != 3) {
+			int TS_ID = TsAuthentication(getApplicationID, Test_Scenario_Name);
+			if (TS_ID > 0) {
 				/*
 				 * Set TestCase Name and UserName
 				 * on the TestCases table, with an unique ID
 				 * */
 
-				int SSMStestCaseID = SSMSUtils.setTestCaseName(Test_Scenario_Name, getApplicationID, userID, flag);
+				// int SSMStestCaseID = SSMSUtils.setTestCaseName(Test_Scenario_Name, getApplicationID, userID, flag);
 
 				/*
 				 * Set the Page Name with new ID,
@@ -85,10 +85,11 @@ public class LightHouse {
 				String getCurrentURL = driver.getCurrentUrl();
 				int SSMSpager_id = SSMSUtils.getPagerId(getCurrentURL);
 
+//				System.out.println("App " + getApplicationID + " Page " + SSMSpager_id+ "TC " + SSMStestCaseID + "uerId " + userID);
 				// Performance Methods
 				try {
 					// Recently added navigation Id
-					int Navigation_Master_Nav_id = ValueParser.NavigationAnalyser(driver, getApplicationID, SSMSpager_id, SSMStestCaseID, userID);
+					int Navigation_Master_Nav_id = ValueParser.NavigationAnalyser(driver, getApplicationID, SSMSpager_id, TS_ID, userID);
 					System.out.println("NavId : "+Navigation_Master_Nav_id);
 					// Insert Value in Resource_Master and Return the value
 
@@ -140,7 +141,7 @@ public class LightHouse {
 		 * First Check if Application name exists in Application Table
 		 * */
 		int getApplicationIdIfExists = SSMSUtils.hasApplication(ApplicationName);
-		System.out.println("get Application Id :  " + getApplicationIdIfExists);		
+//		System.out.println("get Application Id :  " + getApplicationIdIfExists);		
 		String query = QueriesLibrary.hasAccessToApplication();
 		boolean flag = false;
 		try (Connection connection = SSMSDataMigrationCredentials.getSSMSConnection()) {
@@ -168,43 +169,29 @@ public class LightHouse {
 	private static int TsAuthentication(int appID, String testCaseName) {
 
 		String query = QueriesLibrary.authQuery();
-		int flag = 1; // Insert Token 1
+		int tsID = 0;
 		try (Connection connection = SSMSDataMigrationCredentials.getSSMSConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(query);
 			while (result.next()) {
 				String testSCname = result.getString("TS_Name");
 				int applicationId = result.getInt("TS_Application_ID");
+				
 
 				/*
-				 * PopUp that verifies if TS_Reg_UserID will be updated 
+				 * Check if the TestScenario is added from UI
 				 * */
 				if (testSCname.equals(testCaseName) && (applicationId == appID)) {
-					if (JOptionPane.showConfirmDialog(null, "Do you really want to override User ID of the existing Test Case '"+testCaseName+"'?", "WARNING",
-							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-						flag = 2; // Update Token 2
-					} else {
-						flag = 3; // Refuse Updation 3
-					}
-				}                
+					tsID = result.getInt("TS_ID");
+				}
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return flag;
+		return tsID;
 	}
 
-//	// Access Database generation class
-//	public void SSMSAgent() throws InterruptedException {
-//		Connection con = SSMSDataMigrationCredentials.getSSMSConnection();
-//		SSMSDataMigrationUtils sdm = new SSMSDataMigrationUtils();
-//		try{
-//			sdm.SSMSDatabaseManagerAgent(con);
-//		} catch (Exception e) {   
-//			e.printStackTrace();
-//		}
-//	}
 
 	// get values at any time
 	public List<String> getListedNavigationElementsNow(){

@@ -12,7 +12,7 @@ public class SSMSDataMigrationCredentials {
 		String ClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 		//String IPAddr = "DESKTOP-LHLA0PA\\MSSQLSERVER01";
 		String IPAddr = "DESKTOP-LHLA0PA;";
-		String DBName="prfDatabase1";
+		String DBName="PerformanceFinal";
 		String DB_URL = "jdbc:sqlserver://" + IPAddr + "DatabaseName=" + DBName + ";integratedSecurity=true" ;
 		Connection cons = dbConnect (DB_URL,ClassName);
 		return cons;
@@ -44,6 +44,8 @@ public class SSMSDataMigrationCredentials {
 		}
 		try{
 			connection = DriverManager.getConnection(db_connect_string);
+			System.out.println("Connected");
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
