@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.sql.PreparedStatement;
 
 
@@ -14,6 +15,10 @@ import javax.swing.JOptionPane;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.proHar.perfoMeasure.main.exceptions.NoApplicationAccessException;
 import com.proHar.perfoMeasure.main.exceptions.NoExistingTestCaseOrApplicationNameFoundLightHouseException;
@@ -37,9 +42,23 @@ public class LightHouse {
 		ac.setApiKey(apiKey);
 
 	}
+	public void waitForLoad(WebDriver driver) {
+        ExpectedCondition<Boolean> pageLoadCondition = new
+                ExpectedCondition<Boolean>() {
+                    public Boolean apply(WebDriver driver) {
+                        return ((JavascriptExecutor)driver).executeScript("return document.readyState").equals("complete");
+                    }
+                };
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(pageLoadCondition);
+    }
 	//public void TestPerformer() throws NoExistingTestCaseOrApplicationNameFoundLightHouseException, NoApplicationAccessException {
-	public void Performer(WebDriver driver, String Test_Scenario_Name, String ProjectName) throws NoExistingTestCaseOrApplicationNameFoundLightHouseException, NoApplicationAccessException {
+	public void Performer(WebDriver driver, String Test_Scenario_Name, String ProjectName) throws NoExistingTestCaseOrApplicationNameFoundLightHouseException, NoApplicationAccessException, InterruptedException {
 
+		waitForLoad(driver);
+//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//		new WebDriverWait(driver, 30).until(
+//			      webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 		// Application name
 		JavascriptExecutor js = (JavascriptExecutor)driver;  
 		String ApplicationName = js.executeScript("return document.domain;").toString();
@@ -90,7 +109,7 @@ public class LightHouse {
 				try {
 					// Recently added navigation Id
 					int Navigation_Master_Nav_id = ValueParser.NavigationAnalyser(driver, getApplicationID, SSMSpager_id, TS_ID, userID);
-					System.out.println("NavId : "+Navigation_Master_Nav_id);
+					//System.out.println("NavId : "+Navigation_Master_Nav_id);
 					// Insert Value in Resource_Master and Return the value
 
 					/*
@@ -99,7 +118,7 @@ public class LightHouse {
 					ValueParser.ResourceAnalyser(driver, userID, Navigation_Master_Nav_id);
 					
 					RemovalAndDeletion();
-					System.out.println("done");
+					//System.out.println("done");
 				} catch (InterruptedException e) {   
 					e.printStackTrace();
 				}

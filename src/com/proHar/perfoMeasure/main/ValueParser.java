@@ -217,7 +217,7 @@ public class ValueParser {
 		double Dom_Complete;
 		double Content_load;
 		double Page_load;
-		Thread.sleep(3000);
+		
 
 		String[] navtemp;
 		int nRowsInserted = 0;
@@ -229,6 +229,7 @@ public class ValueParser {
 
 		// Navigation Timings
 		String navigationStatusString = js.executeScript("return window.performance.getEntries()["+0+"]").toString();
+		//System.out.println("Ststus: " + navigationStatusString);
 
 		// get Navigation value string length
 		int length = navigationStatusString.length();
@@ -258,7 +259,8 @@ public class ValueParser {
 		type = navigationValMap.get("type");
 		decodedBodySize = navigationValMap.get("decodedBodySize");
 		duration = navigationValMap.get("duration");
-		redirectStart = navigationValMap.get("redirectStart");
+		redirectStart = navigationValMap.get("redirectStart"); // navigationStart
+		//System.out.println("Redirect start : " + redirectStart);
 
 		connectEnd = navigationValMap.get("connectEnd");
 		requestStart = navigationValMap.get("requestStart");
@@ -299,8 +301,8 @@ public class ValueParser {
 			Dom_Interactive = Double.parseDouble(domInteractive)-domloading;
 			Dom_Complete = Double.parseDouble(domComplete)-domloading;
 			Content_load = OnContentload;
-
-			Page_load = Onload;
+			
+			Page_load = Double.parseDouble(loadEventEnd) - Double.parseDouble(redirectStart);
 
 			Date date = new Date();
 			DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
@@ -334,7 +336,7 @@ public class ValueParser {
 				java.sql.Timestamp timestamps = new java.sql.Timestamp(cal.getTimeInMillis());
 				preparedStatement.setTimestamp(14, timestamps); // Nav_DateTimes
 				nRowsInserted += preparedStatement.executeUpdate();
-				System.out.println("Navigation data inserted");
+				//System.out.println("Navigation data inserted");
 				
 				// Insert into Navigation_History table
 				PreparedStatement preparedStatementH = connection.prepareStatement(QueriesLibrary.insertIntoNavigationHistory);
@@ -355,7 +357,7 @@ public class ValueParser {
 				java.sql.Timestamp timestampsH = new java.sql.Timestamp(cal.getTimeInMillis());
 				preparedStatementH.setTimestamp(14, timestampsH); // Nav_DateTimes
 				nRowsInserted += preparedStatementH.executeUpdate();
-				System.out.println("Navigation History data inserted");
+				//System.out.println("Navigation History data inserted");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -364,7 +366,7 @@ public class ValueParser {
 			Nav_IDs = SSMSUtils.getRecentNavigationID(appId, pageId, testCaseId, UId);
 
 		}catch (NullPointerException e) {
-			System.out.println("Some Fields Has No Value for " + driver.getCurrentUrl());
+			//System.out.println("Some Fields Has No Value for " + driver.getCurrentUrl());
 			e.printStackTrace();
 		}
 
