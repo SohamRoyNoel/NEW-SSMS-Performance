@@ -24,6 +24,7 @@ public class SSMSDataMigrationCredentials {
 		String libpath = System.getProperty("java.library.path");
 		// Get the apth for AUTHENTICATION DLLs
 		libpath = "C:\\Users\\soham\\Downloads\\sqljdbc_8.2\\enu\\auth\\x64\\;" +libpath;
+		System.out.println(libpath);
 		Field sysPathsField;
 		try {
 			sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
